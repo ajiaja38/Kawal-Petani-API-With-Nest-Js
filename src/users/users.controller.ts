@@ -8,14 +8,10 @@ import {
   Delete,
   Query,
   ParseIntPipe,
-  UseGuards,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-users.dto';
 import { UpdateUserDto } from './dto/update-users.dto';
-import { Roles } from 'src/guards/roles.decorator';
-import { Role } from './schema/users.schema';
-import { RolesGuard } from 'src/guards/roles.guard';
 import { UpdateUserPasswordDto } from './dto/update-userPassword.dto';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
