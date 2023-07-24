@@ -170,8 +170,6 @@ export class UsersController {
     };
   }
 
-  @UseGuards(RolesGuard)
-  @Roles(Role.ADMIN)
   @Delete('/:guid')
   async deleteUserByGuidHandler(@Param('guid') guid: string) {
     await this.usersService.deleteUserById(guid);

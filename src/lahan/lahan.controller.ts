@@ -82,7 +82,7 @@ export class LahanController {
   @Put('/:id/trajectories')
   async pushTrajectoriesHandler(
     @Param('id') guid: string,
-    @Body() payload: TrajectoriesDto,
+    @Body() payload: TrajectoriesDto[],
   ): Promise<object> {
     await this.lahanService.addTrajectories(guid, payload);
 

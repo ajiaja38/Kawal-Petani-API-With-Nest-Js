@@ -128,11 +128,14 @@ export class LahanService {
     return lahan;
   }
 
-  async addTrajectories(guid: string, payload: TrajectoriesDto): Promise<void> {
+  async addTrajectories(
+    guid: string,
+    payload: TrajectoriesDto[],
+  ): Promise<void> {
     try {
       await this.lahanModel.findOneAndUpdate(
         { guid },
-        { $push: { trajectories: { ...payload } } },
+        { $push: { trajectories: { $each: payload } } },
       );
     } catch (error) {
       throw new NotFoundException(
