@@ -4,7 +4,7 @@ import { Types } from 'mongoose';
 
 export class UpdateLahanDto {
   @IsNotEmpty()
-  jenisTanah: string
+  nama: string
 
   @IsNotEmpty()
   jenis: string
@@ -20,7 +20,4 @@ export class UpdateLahanDto {
 
   @IsNotEmpty()
   hasilLab: string
-
-  @IsNotEmpty()
-  owner: Types.ObjectId
 }

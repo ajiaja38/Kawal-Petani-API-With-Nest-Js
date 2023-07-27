@@ -18,6 +18,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { multerOptions } from 'src/config/multer.config';
 import { resolve } from 'path';
 import { UpdateDataAlamDto } from './dto/update-dataAlam.dto';
+import { UpdateLahanDto } from './dto/update-lahan.dto';
 
 @Controller('lahan')
 export class LahanController {
@@ -34,10 +35,11 @@ export class LahanController {
     @UploadedFile() foto: Express.Multer.File,
     @Body() payload: CreateLahanDto,
   ): Promise<any> {
-    await this.lahanService.createLahan(payload, foto.filename);
+    const guid = await this.lahanService.createLahan(payload, foto.filename);
     return {
       status: 'success',
       message: 'Berhasil Menambahkan Data Lahan Baru',
+      guidLahan: guid,
     };
   }
 
@@ -76,6 +78,20 @@ export class LahanController {
     return {
       status: 'success',
       data: lahan,
+    };
+  }
+
+  @Put('/:id')
+  async updateLahanByIdHandler(
+    @Param('id') guid: string,
+    @Body() payload: UpdateLahanDto,
+  ): Promise<object> {
+    const guidLahan = await this.lahanService.updateLahan(guid, payload);
+
+    return {
+      status: 'success',
+      message: 'Berhasil update data lahan',
+      guidLahan,
     };
   }
 
@@ -125,12 +141,13 @@ export class LahanController {
   }
 
   @Delete('/:id')
-  async deleteLahanHandler(@Param('id') guid: string) {
-    await this.lahanService.deleteLahanById(guid);
+  async deleteLahanHandler(@Param('id') guid: string): Promise<object> {
+    const guidLahan = await this.lahanService.deleteLahanById(guid);
 
     return {
       status: 'success',
       message: 'Berhasil Menghapus Lahan',
+      guidLahan,
     };
   }
 }

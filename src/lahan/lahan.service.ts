@@ -15,6 +15,7 @@ import { unlinkSync } from 'fs';
 import { resolve } from 'path';
 import { UpdateDataAlamDto } from './dto/update-dataAlam.dto';
 import { v4 as uuidv4 } from 'uuid';
+import { UpdateLahanDto } from './dto/update-lahan.dto';
 
 @Injectable()
 export class LahanService {
@@ -26,7 +27,7 @@ export class LahanService {
     private readonly petaniService: PetaniService,
   ) {}
 
-  async createLahan(payload: CreateLahanDto, foto: string): Promise<void> {
+  async createLahan(payload: CreateLahanDto, foto: string): Promise<string> {
     try {
       const { owner } = payload;
       await this.petaniService.getPetaniById(owner);
@@ -46,6 +47,8 @@ export class LahanService {
       const createLahan = new this.lahanModel(schema);
 
       createLahan.save();
+
+      return createLahan.guid;
     } catch (error) {
       throw new InternalServerErrorException('Gagal Menambahkan data Lahan!');
     }
@@ -118,6 +121,22 @@ export class LahanService {
     return lahan;
   }
 
+  async updateLahan(guid: string, payload: UpdateLahanDto): Promise<string> {
+    try {
+      const updatedLahan = await this.lahanModel.findOneAndUpdate(
+        { guid },
+        { ...payload },
+        { new: true },
+      );
+
+      return updatedLahan.guid;
+    } catch (error) {
+      throw new NotFoundException(
+        'Gagal update lahan, guid lahan tidak ditemukan!',
+      );
+    }
+  }
+
   async getLahanByOwner(guid: string): Promise<Lahan[]> {
     const lahan = await this.lahanModel.find({ owner: guid });
 
@@ -158,7 +177,7 @@ export class LahanService {
     }
   }
 
-  async deleteLahanById(guid: string): Promise<void> {
+  async deleteLahanById(guid: string): Promise<string> {
     try {
       const lahan = await this.lahanModel.findOne({ guid });
 
@@ -167,6 +186,8 @@ export class LahanService {
       }
 
       await this.lahanModel.findOneAndDelete({ guid });
+
+      return guid;
     } catch (error) {
       throw new NotFoundException(
         'Gagal Hapus Lahan, Id Lahan Tidak Ditemukan!',
