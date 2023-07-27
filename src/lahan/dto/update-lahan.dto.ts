@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
 import { IsNotEmpty } from 'class-validator';
-import { Types } from 'mongoose';
 
 export class UpdateLahanDto {
   @IsNotEmpty()
