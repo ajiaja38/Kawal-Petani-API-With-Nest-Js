@@ -21,5 +21,8 @@ export class CreateLahanDto {
   hasilLab: string
 
   @IsNotEmpty()
+  luas: number
+
+  @IsNotEmpty()
   owner: string
 }

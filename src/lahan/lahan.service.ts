@@ -90,18 +90,56 @@ export class LahanService {
       .skip((page - 1) * limit)
       .limit(limit)
       .select(
-        'guid nama jenis periodePanen jumlahTanaman hasilPanen hasilLab foto owner',
+        'guid nama jenis periodePanen jumlahTanaman hasilPanen hasilLab luas foto owner jenisTanah ketinggian curahHujan suhuRataRata jenisVegetasi jumlahVegetasi',
       );
 
     if (!lahan.length) {
       throw new NotFoundException('Belum ada lahan yang diinputkan!');
     }
 
+    const ownerGuid = lahan.map((item) => item.owner);
+
+    if (!ownerGuid.length) {
+      throw new NotFoundException('Belum ada lahan yang diinputkan!');
+    }
+
+    const petani = await this.petaniService.getAllPetaniByGuid(ownerGuid);
+    const lahanWithPetani = lahan.map((lahanItem) => {
+      const matchedPetani = petani.find(
+        (petaniItem) => petaniItem.guid === lahanItem.owner,
+      );
+
+      return {
+        ...lahanItem.toObject(),
+        petani: matchedPetani || null,
+      };
+    });
+
+    lahanWithPetani.sort((a, b) =>
+      a.petani?.nama.localeCompare(b.petani?.nama),
+    );
+
+    let totalLuasLahan = 0;
+    let totalHasilPanen = 0;
+    let totalJumlahTanaman = 0;
+    let totalJumlahVegetasi = 0;
+
+    lahanWithPetani.forEach((lahanItem) => {
+      totalLuasLahan += lahanItem.luas;
+      totalHasilPanen += lahanItem.hasilPanen;
+      totalJumlahTanaman += lahanItem.jumlahTanaman;
+      totalJumlahVegetasi += lahanItem.jumlahVegetasi;
+    });
+
     return {
       totalPages,
       page,
       totalLahan,
-      lahan,
+      totalLuasLahan: `${totalLuasLahan} Hektar`,
+      totalHasilPanen,
+      totalJumlahTanaman,
+      totalJumlahVegetasi,
+      lahan: lahanWithPetani,
     };
   }
 

@@ -19,4 +19,7 @@ export class UpdateLahanDto {
 
   @IsNotEmpty()
   hasilLab: string
+
+  @IsNotEmpty()
+  luas: number
 }

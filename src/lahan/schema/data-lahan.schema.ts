@@ -32,6 +32,9 @@ export class Lahan {
   @Prop({ required: true })
   hasilLab: string
 
+  @Prop({ required: true })
+  luas: number
+
   @Prop({ default: null })
   foto: string
 

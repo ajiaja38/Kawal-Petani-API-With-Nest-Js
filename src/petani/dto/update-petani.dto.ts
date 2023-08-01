@@ -19,4 +19,10 @@ export class UpdatePetaniDto {
   
   @IsNotEmpty()
   kelurahan: string;
+
+  @IsNotEmpty()
+  latitude: number;
+
+  @IsNotEmpty()
+  longitude: string;
 }

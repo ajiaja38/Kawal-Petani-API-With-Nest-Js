@@ -19,4 +19,10 @@ export class CreatePetaniDto {
   
   @IsNotEmpty()
   kelurahan: string;
+
+  @IsNotEmpty()
+  latitude: number;
+
+  @IsNotEmpty()
+  longitude: string;
 }

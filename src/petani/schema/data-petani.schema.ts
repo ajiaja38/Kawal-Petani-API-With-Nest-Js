@@ -30,6 +30,12 @@ export class Petani {
   @Prop({ required: true })
   kelurahan: string
 
+  @Prop({ required: true })
+  latitude: number
+
+  @Prop({ required: true })
+  longitude: number
+
   @Prop({ default: Date.now })
   createdAt: Date
 

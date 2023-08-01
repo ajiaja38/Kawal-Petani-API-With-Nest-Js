@@ -51,7 +51,7 @@ export class PetaniService {
     const petani = await this.petaniModel
       .find()
       .select(
-        ' guid nama nik provinsi kabupaten kecamatan kelurahan dataLahan createdAt updatedAt ',
+        ' guid nama nik provinsi kabupaten kecamatan kelurahan latitude longitude dataLahan createdAt updatedAt ',
       );
 
     if (!petani.length) {
@@ -85,7 +85,7 @@ export class PetaniService {
       .skip((page - 1) * limit)
       .limit(limit)
       .select(
-        'guid nama nik provinsi kabupaten kecamatan kelurahan dataLahan createdAt updatedAt',
+        'guid nama nik provinsi kabupaten kecamatan kelurahan latitude longitude dataLahan createdAt updatedAt',
       );
 
     if (!petani.length) {
@@ -103,7 +103,9 @@ export class PetaniService {
   async getPetaniById(guid: string): Promise<any> {
     const petani = await this.petaniModel
       .findOne({ guid })
-      .select('guid nama nik provinsi kabupaten kecamatan kelurahan');
+      .select(
+        'guid nama nik provinsi kabupaten kecamatan kelurahan latitude longitude',
+      );
 
     if (!petani) {
       throw new NotFoundException(
@@ -137,6 +139,14 @@ export class PetaniService {
       jumlahLahan: lahan.length,
       dataLahan,
     };
+  }
+
+  async getAllPetaniByGuid(ownerGuid: string[]): Promise<any> {
+    const petani = await this.petaniModel
+      .find({ guid: { $in: ownerGuid } })
+      .select(' guid nama nik kelurahan ');
+
+    return petani;
   }
 
   async updatePetaniById(
