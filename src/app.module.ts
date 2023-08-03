@@ -9,6 +9,7 @@ import { LahanModule } from './lahan/lahan.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
+import { TanamanModule } from './tanaman/tanaman.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { AuthModule } from './auth/auth.module';
     PetaniModule,
     LahanModule,
     AuthModule,
+    TanamanModule,
   ],
   controllers: [AppController],
   providers: [AppService],

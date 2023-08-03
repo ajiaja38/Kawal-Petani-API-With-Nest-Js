@@ -63,11 +63,15 @@ export class PetaniService {
 
   async getAllPetaniPaginate(
     search: string,
+    provinsi: string,
+    kabupaten: string,
+    kecamatan: string,
+    kelurahan: string,
     page: number,
     limit: number,
   ): Promise<any> {
     const regexQuery = new RegExp(search, 'i');
-    const query = {
+    const query: any = {
       $or: [
         { nama: regexQuery },
         { nik: regexQuery },
@@ -77,6 +81,22 @@ export class PetaniService {
         { kelurahan: regexQuery },
       ],
     };
+
+    if (provinsi) {
+      query.provinsi = { $regex: new RegExp(provinsi, 'i') };
+    }
+
+    if (kabupaten) {
+      query.kabupaten = { $regex: new RegExp(kabupaten, 'i') };
+    }
+
+    if (kecamatan) {
+      query.kecamatan = { $regex: new RegExp(kecamatan, 'i') };
+    }
+
+    if (kelurahan) {
+      query.kelurahan = { $regex: new RegExp(kelurahan, 'i') };
+    }
 
     const totalPetani = await this.petaniModel.countDocuments(query);
     const totalPages = Math.ceil(totalPetani / limit);

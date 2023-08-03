@@ -40,11 +40,19 @@ export class PetaniController {
   @Get('/paginate')
   async getAllPetaniWithPaginateHandler(
     @Query('search') search: string,
+    @Query('provinsi') provinsi: string,
+    @Query('kabupaten') kabupaten: string,
+    @Query('kecamatan') kecamatan: string,
+    @Query('kelurahan') kelurahan: string,
     @Query('page', ParseIntPipe) page: number,
     @Query('limit', ParseIntPipe) limit: number,
   ) {
     const petani = await this.petaniService.getAllPetaniPaginate(
       search,
+      provinsi,
+      kabupaten,
+      kecamatan,
+      kelurahan,
       page,
       limit,
     );
