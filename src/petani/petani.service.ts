@@ -136,12 +136,14 @@ export class PetaniService {
     const lahan = await this.lahanService.getLahanByOwner(guid);
 
     const dataLahan = lahan.map((lahanItem) => ({
+      guid: lahanItem.guid,
       nama: lahanItem.nama,
       jenis: lahanItem.jenis,
       periodePanen: lahanItem.periodePanen,
       jumlahTanaman: lahanItem.periodePanen,
       hasilPanen: lahanItem.hasilPanen,
       hasilLab: lahanItem.hasilLab,
+      luas: `${lahanItem.luas} Hektar`,
       foto: lahanItem.foto,
       trajectories: lahanItem.trajectories,
       dataAlam: {
