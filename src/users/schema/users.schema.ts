@@ -28,6 +28,9 @@ export class User {
   telpon: string
 
   @Prop({ default: null })
+  COMPANY_GUID: string
+
+  @Prop({ default: null })
   provinsi: string
 
   @Prop({ default: null })

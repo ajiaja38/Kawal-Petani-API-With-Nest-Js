@@ -58,7 +58,21 @@ export class LahanService {
     const lahan = await this.lahanModel
       .find()
       .select(
-        'guid nama jenis periodePanen jumlahTanaman hasilPanen hasilLab foto owner',
+        'guid nama jenis periodePanen jumlahTanaman hasilPanen hasilLab foto owner COMPANY_GUID trajectories',
+      );
+
+    if (!lahan.length) {
+      throw new NotFoundException('Belum ada lahan yang diinputkan!');
+    }
+
+    return lahan;
+  }
+
+  async getAllLahanByCompanyGuid(COMPANY_GUID: string): Promise<Lahan[]> {
+    const lahan = await this.lahanModel
+      .find({ COMPANY_GUID })
+      .select(
+        'guid nama jenis periodePanen jumlahTanaman hasilPanen hasilLab foto owner COMPANY_GUID trajectories',
       );
 
     if (!lahan.length) {
@@ -90,7 +104,84 @@ export class LahanService {
       .skip((page - 1) * limit)
       .limit(limit)
       .select(
-        'guid nama jenis periodePanen jumlahTanaman hasilPanen hasilLab luas foto owner jenisTanah ketinggian curahHujan suhuRataRata jenisVegetasi jumlahVegetasi',
+        'guid nama jenis periodePanen jumlahTanaman hasilPanen hasilLab luas foto owner COMPANY_GUID jenisTanah ketinggian curahHujan suhuRataRata jenisVegetasi jumlahVegetasi',
+      );
+
+    if (!lahan.length) {
+      throw new NotFoundException('Belum ada lahan yang diinputkan!');
+    }
+
+    const ownerGuid = lahan.map((item) => item.owner);
+
+    if (!ownerGuid.length) {
+      throw new NotFoundException('Belum ada lahan yang diinputkan!');
+    }
+
+    const petani = await this.petaniService.getAllPetaniByGuid(ownerGuid);
+    const lahanWithPetani = lahan.map((lahanItem) => {
+      const matchedPetani = petani.find(
+        (petaniItem) => petaniItem.guid === lahanItem.owner,
+      );
+
+      return {
+        ...lahanItem.toObject(),
+        petani: matchedPetani || null,
+      };
+    });
+
+    lahanWithPetani.sort((a, b) =>
+      a.petani?.nama.localeCompare(b.petani?.nama),
+    );
+
+    let totalLuasLahan = 0;
+    let totalHasilPanen = 0;
+    let totalJumlahTanaman = 0;
+    let totalJumlahVegetasi = 0;
+
+    lahanWithPetani.forEach((lahanItem) => {
+      totalLuasLahan += lahanItem.luas;
+      totalHasilPanen += lahanItem.hasilPanen;
+      totalJumlahTanaman += lahanItem.jumlahTanaman;
+      totalJumlahVegetasi += lahanItem.jumlahVegetasi;
+    });
+
+    return {
+      totalPages,
+      page,
+      totalLahan,
+      totalLuasLahan: `${totalLuasLahan} Hektar`,
+      totalHasilPanen,
+      totalJumlahTanaman,
+      totalJumlahVegetasi,
+      lahan: lahanWithPetani,
+    };
+  }
+
+  async getAllLahanWithPaginateByCompanyGuid(
+    COMPANY_GUID: string,
+    search: string,
+    page: number,
+    limit: number,
+  ): Promise<object> {
+    const regexQuery = new RegExp(search, 'i');
+    const query = {
+      COMPANY_GUID,
+      $or: [
+        { nama: regexQuery },
+        { jenis: regexQuery },
+        { periodePanen: regexQuery },
+        { hasilLab: regexQuery },
+      ],
+    };
+
+    const totalLahan = await this.lahanModel.countDocuments(query);
+    const totalPages = Math.ceil(totalLahan / limit);
+    const lahan = await this.lahanModel
+      .find(query)
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .select(
+        'guid nama jenis periodePanen jumlahTanaman hasilPanen hasilLab luas foto owner COMPANY_GUID jenisTanah ketinggian curahHujan suhuRataRata jenisVegetasi jumlahVegetasi',
       );
 
     if (!lahan.length) {
@@ -147,7 +238,7 @@ export class LahanService {
     const lahan = await this.lahanModel
       .findOne({ guid })
       .select(
-        'guid nama jenis periodePanen jumlahTanaman hasilPanen hasilLab foto trajectories jenisTanah ketinggian curahHujan suhuRataRata jenisVegetasi jumlahVegetasi',
+        'guid nama jenis periodePanen jumlahTanaman hasilPanen hasilLab foto owner COMPANY_GUID trajectories jenisTanah ketinggian curahHujan suhuRataRata jenisVegetasi jumlahVegetasi',
       );
 
     if (!lahan) {

@@ -15,6 +15,9 @@ export class CreateAdminDto {
   telpon: string;
 
   @IsNotEmpty()
+  COMPANY_GUID: string;
+
+  @IsNotEmpty()
   provinsi: string;
   
   @IsNotEmpty()

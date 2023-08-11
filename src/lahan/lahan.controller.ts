@@ -53,6 +53,18 @@ export class LahanController {
     };
   }
 
+  @Get('/company/:id')
+  async getAllLahanByCompanyGuidHandler(
+    @Param('id') guid: string,
+  ): Promise<object> {
+    const lahan = await this.lahanService.getAllLahanByCompanyGuid(guid);
+
+    return {
+      status: 'success',
+      data: lahan,
+    };
+  }
+
   @Get('/paginate')
   async getAllLahanWithPaginateHandler(
     @Query('search') search: string,
@@ -60,6 +72,26 @@ export class LahanController {
     @Query('limit', ParseIntPipe) limit: number,
   ): Promise<object> {
     const lahan = await this.lahanService.getAllLahanWithPaginate(
+      search,
+      page,
+      limit,
+    );
+
+    return {
+      status: 'success',
+      data: lahan,
+    };
+  }
+
+  @Get('/paginate/:guid')
+  async getAllLahanWithPaginateByCompanyGuidHandler(
+    @Param('guid') guid: string,
+    @Query('search') search: string,
+    @Query('page', ParseIntPipe) page: number,
+    @Query('limit', ParseIntPipe) limit: number,
+  ): Promise<object> {
+    const lahan = await this.lahanService.getAllLahanWithPaginateByCompanyGuid(
+      guid,
       search,
       page,
       limit,

@@ -137,6 +137,7 @@ export class PetaniService {
 
     const dataLahan = lahan.map((lahanItem) => ({
       guid: lahanItem.guid,
+      COMPANY_GUID: lahanItem.COMPANY_GUID,
       nama: lahanItem.nama,
       jenis: lahanItem.jenis,
       periodePanen: lahanItem.periodePanen,

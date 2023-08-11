@@ -25,4 +25,7 @@ export class CreateLahanDto {
 
   @IsNotEmpty()
   owner: string
+
+  @IsNotEmpty()
+  COMPANY_GUID: string
 }

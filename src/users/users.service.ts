@@ -59,6 +59,7 @@ export class UsersService {
       nama,
       password,
       telpon,
+      COMPANY_GUID,
       provinsi,
       kabupaten,
       kecamatan,
@@ -79,6 +80,7 @@ export class UsersService {
       nama,
       password: hashedPassword,
       telpon,
+      COMPANY_GUID,
       provinsi,
       kabupaten,
       kecamatan,
@@ -374,7 +376,7 @@ export class UsersService {
     }
   }
 
-  async verifyUsersCredentials(payload: LoginDto): Promise<string> {
+  async verifyUsersCredentials(payload: LoginDto): Promise<object> {
     const { email, password } = payload;
 
     const user = await this.userModel.findOne({ email });
@@ -389,6 +391,10 @@ export class UsersService {
       throw new UnauthorizedException('Password Tidak Valid');
     }
 
-    return user.id;
+    return {
+      guid: user.guid,
+      role: user.role,
+      COMPANY_GUID: user.COMPANY_GUID,
+    };
   }
 }

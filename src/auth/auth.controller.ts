@@ -12,9 +12,11 @@ export class AuthController {
 
   @Post('/login')
   async postLoginHandler(@Body() payload: LoginDto): Promise<object> {
-    await this.userService.verifyUsersCredentials(payload);
+    const user = await this.userService.verifyUsersCredentials(payload);
+    const accessToken = await this.authService.login(user);
     return {
       status: 'success',
+      accessToken,
     };
   }
 }

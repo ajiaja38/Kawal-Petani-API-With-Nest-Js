@@ -10,6 +10,7 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
 import { AuthModule } from './auth/auth.module';
 import { TanamanModule } from './tanaman/tanaman.module';
+import { CompanyModule } from './company/company.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { TanamanModule } from './tanaman/tanaman.module';
     LahanModule,
     AuthModule,
     TanamanModule,
+    CompanyModule,
   ],
   controllers: [AppController],
   providers: [AppService],

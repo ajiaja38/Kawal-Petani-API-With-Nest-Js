@@ -1,9 +1,11 @@
 /* eslint-disable prettier/prettier */
 import { JwtModuleOptions } from '@nestjs/jwt'
+import { jwtConstant } from 'src/auth/constant/constant';
 
 export const jwtConfig: JwtModuleOptions = {
-  secret: process.env.SECRET_KEY,
+  global: true,
+  secret: jwtConstant.secret,
   signOptions: {
-    expiresIn: 200000
+    expiresIn: 5000000
   },
 };

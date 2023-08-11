@@ -12,6 +12,9 @@ export class UpdateAdminDto {
   telpon: string;
 
   @IsNotEmpty()
+  COMPANY_GUID: string;
+
+  @IsNotEmpty()
   provinsi: string;
   
   @IsNotEmpty()

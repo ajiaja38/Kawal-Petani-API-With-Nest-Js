@@ -45,6 +45,9 @@ export class Lahan {
   owner: string
 
   @Prop({ default: null })
+  COMPANY_GUID: string
+
+  @Prop({ default: null })
   jenisTanah: string
 
   @Prop({ default: null })
