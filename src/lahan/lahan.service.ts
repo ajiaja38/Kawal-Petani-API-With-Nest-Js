@@ -238,7 +238,7 @@ export class LahanService {
     const lahan = await this.lahanModel
       .findOne({ guid })
       .select(
-        'guid nama jenis periodePanen jumlahTanaman hasilPanen hasilLab foto owner COMPANY_GUID trajectories jenisTanah ketinggian curahHujan suhuRataRata jenisVegetasi jumlahVegetasi',
+        'guid nama jenis periodePanen jumlahTanaman hasilPanen hasilLab luas foto owner COMPANY_GUID trajectories jenisTanah ketinggian curahHujan suhuRataRata jenisVegetasi jumlahVegetasi',
       );
 
     if (!lahan) {
