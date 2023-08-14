@@ -127,7 +127,7 @@ export class LahanController {
     };
   }
 
-  @Put('/:id/trajectories')
+  @Post('/:id/trajectories')
   async pushTrajectoriesHandler(
     @Param('id') guid: string,
     @Body() payload: TrajectoriesDto[],
@@ -137,6 +137,19 @@ export class LahanController {
     return {
       status: 'success',
       message: 'Berhasil Menambahkan Trajectories',
+    };
+  }
+
+  @Put('/:id/trajectoriesupdate')
+  async replaceTrajectoriesHandler(
+    @Param('id') guid: string,
+    @Body() payload: TrajectoriesDto[],
+  ): Promise<object> {
+    await this.lahanService.updateTrajectories(guid, payload);
+
+    return {
+      status: 'success',
+      message: 'Berhasil Update Trajectories',
     };
   }
 

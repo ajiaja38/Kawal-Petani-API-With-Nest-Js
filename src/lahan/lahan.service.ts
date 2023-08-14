@@ -292,6 +292,22 @@ export class LahanService {
     }
   }
 
+  async updateTrajectories(
+    guid: string,
+    payload: TrajectoriesDto[],
+  ): Promise<void> {
+    try {
+      await this.lahanModel.findOneAndUpdate(
+        { guid },
+        { $set: { trajectories: payload } },
+      );
+    } catch (error) {
+      throw new NotFoundException(
+        'Gagal Menambahkan Trajectories, Id lahan tidak ditemukan!',
+      );
+    }
+  }
+
   async addDataAlam(guid: string, payload: UpdateDataAlamDto): Promise<void> {
     try {
       await this.lahanModel.findOneAndUpdate(
