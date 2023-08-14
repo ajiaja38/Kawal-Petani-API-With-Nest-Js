@@ -141,7 +141,7 @@ export class PetaniService {
       nama: lahanItem.nama,
       jenis: lahanItem.jenis,
       periodePanen: lahanItem.periodePanen,
-      jumlahTanaman: lahanItem.periodePanen,
+      jumlahTanaman: lahanItem.jumlahTanaman,
       hasilPanen: lahanItem.hasilPanen,
       hasilLab: lahanItem.hasilLab,
       luas: `${lahanItem.luas} Hektar`,
