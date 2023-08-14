@@ -342,11 +342,6 @@ export class LahanService {
 
   async updateFotoLahan(guid: string, foto: string): Promise<void> {
     try {
-      const lahan = await this.lahanModel.findOne({ guid });
-
-      if (lahan && lahan.foto) {
-        await this.deleteFotoLahan(lahan.foto);
-      }
       await this.lahanModel.findOneAndUpdate({ guid }, { foto }, { new: true });
     } catch (error) {
       throw new NotFoundException(

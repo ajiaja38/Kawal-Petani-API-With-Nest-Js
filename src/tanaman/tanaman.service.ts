@@ -132,12 +132,6 @@ export class TanamanService {
 
   async updateFotoTanaman(guid: string, foto: string): Promise<void> {
     try {
-      const tanaman = await this.tanamanModel.findOne({ guid });
-
-      if (tanaman && tanaman.foto) {
-        await this.deleteFotoTanaman(tanaman.foto);
-      }
-
       await this.tanamanModel.findOneAndUpdate(
         { guid },
         { foto },
@@ -145,7 +139,7 @@ export class TanamanService {
       );
     } catch (error) {
       throw new NotFoundException(
-        'Gagal Update Foto Lahan, Id Lahan Tidak Ditemukan!',
+        'Gagal Update Foto Lahan, Id Tanaman Tidak Ditemukan!',
       );
     }
   }
