@@ -137,6 +137,7 @@ export class TanamanService {
       if (tanaman && tanaman.foto) {
         await this.deleteFotoTanaman(tanaman.foto);
       }
+
       await this.tanamanModel.findOneAndUpdate(
         { guid },
         { foto },

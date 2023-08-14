@@ -85,7 +85,7 @@ export class TanamanController {
     ),
   )
   async updateFotoTanamanHandler(
-    @Param('id') guid: string,
+    @Param('guid') guid: string,
     @UploadedFile() foto: Express.Multer.File,
   ): Promise<object> {
     await this.tanamanService.updateFotoTanaman(guid, foto.filename);
